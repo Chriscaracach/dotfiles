@@ -56,9 +56,9 @@ screens = [
                 *init_widgets_list()
             ],
             30,
-            background="#000000",
+            background=color_dark,
             border_width=[2, 2, 2, 2],
-            border_color=[color_light, color_light, color_light, color_light]  
+            border_color=[color_middark, color_middark, color_middark, color_middark]  
         ),
     ),
 ]
@@ -98,7 +98,7 @@ autostart = [
     "nm-applet &", # Network manager
     "setxkbmap latam &", # Set keyboard layout to latam
     "sh ~/.config/qtile/scripts/check_monitors.sh", # This checks the HDMI screen, comment if you're not using it
-    "sh ~/.config/qtile/scripts/set_random_wallpaper.sh" # This sets a random wallpaper
+    "sh ~/.config/qtile/scripts/set_random_wallpaper.sh" # This sets a random wallpaper based on theme
 ]
 
 for cmd in autostart:

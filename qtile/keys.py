@@ -32,8 +32,8 @@ def init_keys(mod, terminal, groups):
             desc="Toggle fullscreen on the focused window",
         ),
         Key(
-            [mod],
-            "t",
+            [mod, "shift"],
+            "f",
             lazy.window.toggle_floating(),
             desc="Toggle floating on the focused window",
         ),
@@ -51,6 +51,7 @@ def init_keys(mod, terminal, groups):
         Key([mod, "shift"], "j", lazy.spawn("alacritty -e /home/chriscodingit/jarvis_assistant/venv/bin/python /home/chriscodingit/jarvis_assistant/jarvis.py"), desc="Run Jarvis Assistant"),
         Key([mod, "shift"], "o", lazy.spawn(os.path.expanduser("~/my_prs.sh")), desc="Show my PRs"),
         Key([mod], "e", lazy.spawn("/home/chriscodingit/env-runner.sh"), desc="Run environments"),
+        Key([mod], "t", lazy.spawn("python3 /home/chriscodingit/.config/qtile/scripts/theme_switcher.py"), desc="Launch theme switcher"),
 
         # General
         Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),

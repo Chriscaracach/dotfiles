@@ -1,74 +1,34 @@
-# This is my alacritty config.
-#
-# Version 1.1.0 - 17/2/25
-
-[window]
-
-opacity = 1
-
-padding.x = 10
-padding.y = 10
-
-decorations = "Full"
-decorations_theme_variant = "Dark" 
-
 [font]
-
-normal.family = "Hack Nerd Font"
-bold.family = "Hack Nerd Font"
-italic.family = "Hack Nerd Font"
-bold_italic.family = "Hack Nerd Font"
-
+normal = { family = "Hack Nerd Font", style = "Regular" }
+bold = { family = "Hack Nerd Font", style = "Bold" }
+italic = { family = "Hack Nerd Font", style = "Italic" }
 size = 10
 
-[colors]
-# PERSONAL
-# color_dark = "#2E073F"
-# color_middark = "#7A1CAC"
-# color_midlight = "#AD49E1"
-# color_light = "#E49BFF"
-# color_lighter = "#EBD3F8"
-
 [colors.primary]
-foreground = "#E49BFF"
-background = "#2E073F"
+background = "0xffffff"
+foreground = "0x2c2c2c"
 
-[colors.search]
-matches = { foreground = "#7A1CAC", background = "#ac4242" }
-focused_match = { foreground = "#7A1CAC", background = "#f4bf75" }
-
-[colors.hints]
-start = { foreground = "#7A1CAC", background = "#f4bf75" }
-end = { foreground = "#7A1CAC", background = "#ac4242" }
-
-
-# FOR NEXT VERSION, CUSTOMIZE THIS
 [colors.normal]
-black = "#181818"
-red = "#ac4242"
-green = "#90a959"
-yellow = "#f4bf75"
-blue = "#6a9fb5"
-magenta = "#aa759f"
-cyan = "#75b5aa"
-white = "#d8d8d8"
+black = "0x45475a"
+red = "0xf38ba8"
+green = "0xa6e3a1"
+yellow = "0xf9e2af"
+blue = "0x89b4fa"
+magenta = "0xf5c2e7"
+cyan = "0x4a4a4a"
+white = "0xb4befe"
 
 [colors.bright]
-black = "#6b6b6b"
-red = "#c55555"
-green = "#aac474"
-yellow = "#feca88"
-blue = "#82b8c8"
-magenta = "#c28cb8"
-cyan = "#93d3c3"
-white = "#f8f8f8"
+black = "0x585b70"
+red = "0xf38ba8"
+green = "0xa6e3a1"
+yellow = "0xf9e2af"
+blue = "0x89b4fa"
+magenta = "0xf5c2e7"
+cyan = "0x4a4a4a"
+white = "0xa6adc8"
 
-[colors.dim]
-black = "#0f0f0f"
-red = "#712b2b"
-green = "#5f6f3a"
-yellow = "#a17e4d"
-blue = "#456877"
-magenta = "#704d68"
-cyan = "#4d7770"
-white = "#8e8e8e"
+[window]
+dimensions = { columns = 100, lines = 30 }
+padding = { x = 10, y = 10 }
+

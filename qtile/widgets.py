@@ -1,6 +1,6 @@
 from libqtile import widget, qtile
 from libqtile.lazy import lazy
-from colors import color_light, color_dark, color_error, color_lighter
+from colors import color_light, color_dark, color_error, color_lighter, color_middark
 from keyboard_utils import get_layout, toggle_layout
 from fan_status import FanStatus
 from screen_recorder import get_recording_status_text, toggle_recording
@@ -11,9 +11,9 @@ import os
 group_box = widget.GroupBox(
     fontsize=24,
     highlight_method="block",
-    this_current_screen_border="#000", 
-    block_highlight_text_color=color_lighter,  
-    inactive=color_dark,                    
+    this_current_screen_border=color_middark, 
+    block_highlight_text_color=color_light,  
+    inactive=color_middark,                    
     active=color_light,                     
     disable_drag=True
 )
