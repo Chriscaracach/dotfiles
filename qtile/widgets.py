@@ -1,11 +1,16 @@
 from libqtile import widget, qtile
 from libqtile.lazy import lazy
-from colors import color_light, color_dark, color_error, color_lighter, color_middark
 from keyboard_utils import get_layout, toggle_layout
 from fan_status import FanStatus
 from screen_recorder import get_recording_status_text, toggle_recording
 
 import os
+import sys
+from pathlib import Path
+
+# Add theme_switcher to path and import colors
+sys.path.insert(0, str(Path.home() / ".config" / "qtile" / "theme_switcher"))
+from current_colors import color_light, color_dark, color_error, color_lighter, color_middark
 
 # Groupbox for workspace management
 group_box = widget.GroupBox(

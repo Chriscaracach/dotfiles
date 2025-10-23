@@ -3,6 +3,14 @@
 from pathlib import Path
 
 
+def normalize_hex_color(color):
+    """Normalize 3-char hex colors to 6-char format"""
+    if color.startswith("#") and len(color) == 4:
+        # Convert #fff to #ffffff
+        return f"#{color[1]}{color[1]}{color[2]}{color[2]}{color[3]}{color[3]}"
+    return color
+
+
 def update_alacritty_theme(theme_colors):
     """Update Alacritty terminal colors"""
     alacritty_config = Path.home() / ".config" / "alacritty" / "alacritty.toml"
@@ -21,13 +29,13 @@ def update_alacritty_theme(theme_colors):
         bg = "0xffffff"
         fg = "0x2c2c2c"
         cursor = "0x4a4a4a"
-        accent = theme_colors["color_light"].replace("#", "0x")
+        accent = normalize_hex_color(theme_colors["color_light"]).replace("#", "0x")
     else:
         # Dark theme colors
-        bg = theme_colors["color_dark"].replace("#", "0x")
-        fg = theme_colors["color_lighter"].replace("#", "0x")
-        cursor = theme_colors["color_light"].replace("#", "0x")
-        accent = theme_colors["color_midlight"].replace("#", "0x")
+        bg = normalize_hex_color(theme_colors["color_dark"]).replace("#", "0x")
+        fg = normalize_hex_color(theme_colors["color_lighter"]).replace("#", "0x")
+        cursor = normalize_hex_color(theme_colors["color_light"]).replace("#", "0x")
+        accent = normalize_hex_color(theme_colors["color_midlight"]).replace("#", "0x")
     
     new_lines = []
     for line in lines:
