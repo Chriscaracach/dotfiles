@@ -8,10 +8,10 @@ configuration {
 @theme "/usr/share/rofi/themes/DarkBlue.rasi"
 
 * {
-	bg: #fff;
-	bg-alt: #d8d8d8;
-	fg: #2c2c2c;
-	fg-alt: #4a4a4a;
+	bg: #2e3440;
+	bg-alt: #3b4252;
+	fg: #d8dee9;
+	fg-alt: #eceff4;
 	
 	border: 0;
 	margin: 0;

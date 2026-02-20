@@ -2,10 +2,10 @@
 #
 # Version 2.0.1 - 10/7/25
 
-#|--- TODO ---|#
+# |--- TODO ---|#
 
 
-#|--- IMPORTS ---|#
+# |--- IMPORTS ---|#
 import os
 import subprocess
 import sys
@@ -16,9 +16,7 @@ from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 
-# Add theme_switcher to path and import colors
-sys.path.insert(0, str(Path.home() / ".config" / "qtile" / "theme_switcher"))
-from current_colors import *
+from colors import *
 from keys import init_keys
 from layouts import init_layouts
 from widgets import init_widgets_list
@@ -26,7 +24,7 @@ from widgets import init_widgets_list
 mod = "mod4"
 terminal = guess_terminal()
 
-#|--- GROUPS ---|#
+# |--- GROUPS ---|#
 groups = [
     Group("1", label="\ue69d"),
     Group("2", label="\uf269"),
@@ -39,16 +37,16 @@ groups = [
     Group("9", label="\uf1ff"),
 ]
 
-#|--- KEYS ---|#
+# |--- KEYS ---|#
 keys = init_keys(mod, terminal, groups)
 
-#|--- LAYOUTS ---|
+# |--- LAYOUTS ---|
 layouts, floating_layout = init_layouts(color_dark, color_light)
 
 widget_defaults = dict(
     font="Hack Nerd Font Mono",
     fontsize=14,
-    padding=4,
+    padding=5,
 )
 
 extension_defaults = widget_defaults.copy()
@@ -56,13 +54,10 @@ extension_defaults = widget_defaults.copy()
 screens = [
     Screen(
         top=bar.Bar(
-            [
-                *init_widgets_list()
-            ],
-            30,
-            background=color_dark,
-            border_width=[2, 2, 2, 2],
-            border_color=[color_middark, color_middark, color_middark, color_middark]  
+            [*init_widgets_list()],
+            40,
+            background=color_bg,
+            margin=5,
         ),
     ),
 ]
@@ -97,12 +92,13 @@ wl_xcursor_size = 24
 wmname = "LG3D"
 
 autostart = [
-    "dunst &", # Notifications
-    "picom &", # Compositor
-    "nm-applet &", # Network manager
-    "setxkbmap latam &", # Set keyboard layout to latam
-    "sh ~/.config/qtile/scripts/check_monitors.sh", # This checks the HDMI screen, comment if you're not using it
-    "sh ~/.config/qtile/scripts/set_random_wallpaper.sh" # This sets a random wallpaper based on theme
+    "dunst &",  # Notifications
+    "picom &",  # Compositor
+    "nm-applet &",  # Network manager
+    "setxkbmap latam &",  # Set keyboard layout to latam
+    "sh ~/.config/qtile/scripts/check_monitors.sh",  # This checks the HDMI screen, comment if you're not using it
+    # "sh ~/.config/qtile/scripts/set_random_wallpaper.sh" # This sets a random wallpaper based on theme
+    "nitrogen --restore &",  # Restore wallpaper
 ]
 
 for cmd in autostart:
