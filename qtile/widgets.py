@@ -1,3 +1,6 @@
+import re
+import subprocess
+
 from libqtile import widget, qtile
 from libqtile.lazy import lazy
 from keyboard_utils import get_layout, toggle_layout
@@ -5,8 +8,6 @@ from keyboard_utils import get_layout, toggle_layout
 # from fan_status import FanStatus
 from screen_recorder import get_recording_status_text, toggle_recording
 
-import os
-import sys
 from pathlib import Path
 
 from colors import (
@@ -14,10 +15,12 @@ from colors import (
     color_dark,
     color_red,
     color_middark,
+    color_bg,
 )
 
 # Groupbox for workspace management
 group_box = widget.GroupBox(
+    font="Hack Nerd Font Mono",
     fontsize=24,
     highlight_method="block",
     this_current_screen_border=color_middark,
@@ -28,7 +31,7 @@ group_box = widget.GroupBox(
 )
 
 # System tray
-systray = widget.Systray()
+systray = widget.Systray(background=color_bg)
 
 
 # Temperature widgets
@@ -49,7 +52,7 @@ net_icon = widget.TextBox(
     foreground=color_light,
     fontsize=26,
     mouse_callbacks={
-        "Button1": lambda: qtile.cmd_spawn("alacritty -e fish -c 'nmtui'")
+        "Button1": lambda: qtile.spawn("alacritty -e fish -c 'nmtui'")
     },
 )
 net_widget = widget.Net(
@@ -63,7 +66,7 @@ ram_icon = widget.TextBox(
     "\uefc5",
     foreground=color_light,
     fontsize=26,
-    mouse_callbacks={"Button1": lambda: qtile.cmd_spawn("alacritty -e fish -c 'htop'")},
+    mouse_callbacks={"Button1": lambda: qtile.spawn("alacritty -e fish -c 'htop'")},
 )
 ram_widget = widget.Memory(
     measure_mem="G",
@@ -83,14 +86,52 @@ cpu_widget = widget.CPU(
 )
 
 # Volume widgets
+def get_volume_text():
+    try:
+        muted = "yes" in subprocess.check_output(
+            ["pactl", "get-sink-mute", "@DEFAULT_SINK@"], text=True
+        )
+        vol_out = subprocess.check_output(
+            ["pactl", "get-sink-volume", "@DEFAULT_SINK@"], text=True
+        )
+        match = re.search(r"(\d+)%", vol_out)
+        vol = int(match.group(1)) if match else 0
+
+        filled = round(vol * 8 / 100)
+        bar = "█" * filled + "░" * (8 - filled)
+        prefix = "M " if muted else ""
+        return f"{prefix}{bar} {vol}%"
+    except Exception:
+        return "?%"
+
+
+def _vol_up(_):
+    subprocess.run(["pactl", "set-sink-volume", "@DEFAULT_SINK@", "+5%"])
+    volume_widget.tick()
+
+
+def _vol_down(_):
+    subprocess.run(["pactl", "set-sink-volume", "@DEFAULT_SINK@", "-5%"])
+    volume_widget.tick()
+
+
+_volume_callbacks = {
+    "Button1": lambda: qtile.spawn("pavucontrol"),
+    "Button4": lazy.function(_vol_up),
+    "Button5": lazy.function(_vol_down),
+}
 volume_icon = widget.TextBox(
     "\uf028",
     foreground=color_light,
     fontsize=26,
-    mouse_callbacks={"Button1": lambda: qtile.cmd_spawn("pavucontrol")},
+    mouse_callbacks=_volume_callbacks,
 )
-volume_widget = widget.PulseVolume(
+volume_widget = widget.GenPollText(
+    update_interval=1,
+    func=get_volume_text,
     foreground=color_light,
+    mouse_callbacks=_volume_callbacks,
+    padding=5,
 )
 
 # Battery widgets
@@ -136,9 +177,6 @@ keyboard_widget = widget.GenPollText(
     padding=5,
 )
 
-# Fan widget
-# fan_icon = widget.TextBox("\uefa7", foreground=color_light, fontsize=26)
-# fan_widget = FanStatus(foreground=color_light)
 
 # Screen Recorder Widget
 screen_recorder_icon = widget.TextBox(
@@ -185,6 +223,7 @@ def init_widgets_list():
         cpu_widget,
         separator,
         volume_icon,
+        volume_widget,
         separator,
         battery_icon,
         battery_widget,

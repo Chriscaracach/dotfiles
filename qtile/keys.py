@@ -65,38 +65,10 @@ def init_keys(mod, terminal, groups):
         Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
         Key([mod], "p", lazy.spawn("flameshot gui"), desc="Launch Flameshot"),
         Key(
-            [mod, "shift"],
-            "p",
-            lazy.spawn(os.path.expanduser("~/prs.sh")),
-            desc="Show pending PRs",
-        ),
-        Key(
-            [mod, "shift"],
-            "j",
-            lazy.spawn(
-                "alacritty -e /home/chriscodingit/jarvis_assistant/venv/bin/python /home/chriscodingit/jarvis_assistant/jarvis.py"
-            ),
-            desc="Run Jarvis Assistant",
-        ),
-        Key(
-            [mod, "shift"],
-            "o",
-            lazy.spawn(os.path.expanduser("~/my_prs.sh")),
-            desc="Show my PRs",
-        ),
-        Key(
             [mod],
-            "e",
-            lazy.spawn("/home/chriscodingit/env-runner.sh"),
-            desc="Run environments",
-        ),
-        Key(
-            [mod],
-            "t",
-            lazy.spawn(
-                "python3 /home/chriscodingit/.config/qtile/scripts/theme_switcher_new.py"
-            ),
-            desc="Launch theme switcher",
+            "g",
+            lazy.spawn("pcmanfm"),
+            desc="Launch file manager",
         ),
         # General
         Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
