@@ -30,10 +30,6 @@ group_box = widget.GroupBox(
     disable_drag=True,
 )
 
-# System tray
-systray = widget.Systray(background=color_bg)
-
-
 # Temperature widgets
 temp_icon = widget.TextBox(
     "\uf2cb",
@@ -208,8 +204,6 @@ def init_widgets_list():
     widgets = [
         group_box,
         spacer,
-        systray,
-        separator,
         temp_icon,
         temp_sensor,
         separator,

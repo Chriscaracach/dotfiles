@@ -52,16 +52,11 @@ def init_keys(mod, terminal, groups):
             lazy.window.toggle_floating(),
             desc="Toggle floating on the focused window",
         ),
-        # Brightness
-        Key(
-            [mod], "k", lazy.spawn("brightnessctl set +10%"), desc="Increase brightness"
-        ),
-        Key(
-            [mod], "l", lazy.spawn("brightnessctl set 10%-"), desc="Decrease brightness"
-        ),
         # Launchers / Killers
         Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
-        Key([mod], "space", lazy.spawn("rofi -show drun"), desc="Launch rofi"),
+        Key([mod], "space", lazy.spawn("bash /home/chris/.config/qtile/scripts/appmenu.sh"), desc="Launch rofi"),
+        Key([mod], "t", lazy.spawn("bash /home/chris/.config/qtile/scripts/tray.sh"), desc="Launch tray menu"),
+        Key([mod], "v", lazy.spawn("bash /home/chris/.config/qtile/scripts/mic.sh"), desc="Mic control"),
         Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
         Key([mod], "p", lazy.spawn("flameshot gui"), desc="Launch Flameshot"),
         Key(

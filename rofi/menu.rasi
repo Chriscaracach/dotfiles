@@ -1,0 +1,84 @@
+configuration {
+    show-icons:        false;
+    drun-display-format: "{name}";
+}
+
+* {
+    bg:      #2e3440;
+    bg-alt:  #3b4252;
+    fg:      #eceff4;
+    fg-dim:  #4c566a;
+    accent:  #88c0d0;
+
+    background-color: transparent;
+    text-color:       @fg;
+    border:           0;
+    margin:           0;
+    padding:          0;
+    spacing:          0;
+}
+
+window {
+    location:         northeast;
+    anchor:           northeast;
+    x-offset:         -12px;
+    y-offset:         50px;
+    width:            280px;
+    background-color: @bg;
+    border-radius:    10px;
+    padding:          12px;
+}
+
+mainbox {
+    children: [message, inputbar, listview];
+    spacing:  10px;
+}
+
+message {
+    background-color: transparent;
+    padding:          6px 0px;
+}
+
+textbox {
+    text-color:       @accent;
+    horizontal-align: 0.5;
+    vertical-align:   0.5;
+    font:             "Hack Nerd Font Mono 36";
+}
+
+inputbar {
+    background-color: @bg-alt;
+    border-radius:    6px;
+    padding:          8px 12px;
+    spacing:          8px;
+    children:         [entry];
+}
+
+entry {
+    text-color:        @fg;
+    placeholder:       "Search...";
+    placeholder-color: @fg-dim;
+    font:              "Hack Nerd Font Mono 12";
+}
+
+listview {
+    lines:   8;
+    columns: 1;
+    spacing: 2px;
+    fixed-height: false;
+}
+
+element {
+    padding:       6px 10px;
+    border-radius: 6px;
+    spacing:       0;
+}
+
+element normal normal  { background-color: transparent; }
+element selected normal { background-color: @bg-alt; text-color: @accent; }
+
+element-text {
+    font:             "Hack Nerd Font Mono 12";
+    text-color:       inherit;
+    vertical-align:   0.5;
+}
