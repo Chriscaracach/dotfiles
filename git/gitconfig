@@ -1,0 +1,14 @@
+[user]
+	name = Christian Caracach
+	email = christiancaracach@gmail.com
+
+[core]
+	pager = delta
+
+[delta]
+	line-numbers = true
+	side-by-side = true
+	syntax-theme = Nord
+
+[interactive]
+	diffFilter = delta --color-only
