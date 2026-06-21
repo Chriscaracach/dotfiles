@@ -14,3 +14,6 @@ data
 # Python
 __pycache__/
 *.py[cod]
+
+# Theme switcher state (symlink to the active theme)
+themes/current

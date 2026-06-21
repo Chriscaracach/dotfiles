@@ -1,21 +1,9 @@
-# Qtile Color Themes
-# Uncomment the theme you want to use
+# Colors come from the active theme: ~/.config/themes/current/qtile.py
+# Switch themes with mod+u (menus/theme.sh). The Nord values below are a
+# fallback for when no theme symlink exists yet.
 
-# |--- DRACULA THEME ---|
-# color_dark = "#282a36"
-# color_light = "#bd93f9"
-# color_accent = "#ff79c6"
-# color_fg = "#f8f8f2"
-# color_bg = "#282a36"
-# color_middark = "#44475a"
-# color_red = "#ff5555"
-# color_green = "#50fa7b"
-# color_yellow = "#f1fa8c"
-# color_blue = "#bd93f9"
-# color_magenta = "#ff79c6"
-# color_cyan = "#8be9fd"
+import os
 
-# |--- NORD THEME ---|
 color_dark = "#2e3440"
 color_light = "#88c0d0"
 color_accent = "#81a1c1"
@@ -29,58 +17,7 @@ color_blue = "#81a1c1"
 color_magenta = "#b48ead"
 color_cyan = "#88c0d0"
 
-# |--- GRUVBOX DARK ---|
-# color_dark = "#282828"
-# color_light = "#ebdbb2"
-# color_accent = "#fe8019"
-# color_fg = "#ebdbb2"
-# color_bg = "#282828"
-# color_middark = "#3c3836"
-# color_red = "#cc241d"
-# color_green = "#98971a"
-# color_yellow = "#d79921"
-# color_blue = "#458588"
-# color_magenta = "#b16286"
-# color_cyan = "#689d6a"
-
-# |--- CATPPUCCIN MOCHA ---|
-# color_dark = "#1e1e2e"
-# color_light = "#cdd6f4"
-# color_accent = "#f5c2e7"
-# color_fg = "#cdd6f4"
-# color_bg = "#1e1e2e"
-# color_middark = "#313244"
-# color_red = "#f38ba8"
-# color_green = "#a6e3a1"
-# color_yellow = "#f9e2af"
-# color_blue = "#89b4fa"
-# color_magenta = "#cba6f7"
-# color_cyan = "#94e2d5"
-
-# |--- TOKYO NIGHT ---|
-# color_dark = "#1a1b26"
-# color_light = "#c0caf5"
-# color_accent = "#bb9af7"
-# color_fg = "#c0caf5"
-# color_bg = "#1a1b26"
-# color_middark = "#24283b"
-# color_red = "#f7768e"
-# color_green = "#9ece6a"
-# color_yellow = "#e0af68"
-# color_blue = "#7aa2f7"
-# color_magenta = "#bb9af7"
-# color_cyan = "#7dcfff"
-
-# |--- ONEDARK ---|
-# color_dark = "#282c34"
-# color_light = "#abb2bf"
-# color_accent = "#c678dd"
-# color_fg = "#abb2bf"
-# color_bg = "#282c34"
-# color_middark = "#3e4451"
-# color_red = "#e06c75"
-# color_green = "#98c379"
-# color_yellow = "#e5c07b"
-# color_blue = "#61afef"
-# color_magenta = "#c678dd"
-# color_cyan = "#56b6c2"
+_theme = os.path.expanduser("~/.config/themes/current/qtile.py")
+if os.path.exists(_theme):
+    with open(_theme) as _f:
+        exec(_f.read())

@@ -15,6 +15,9 @@ Minimal TOML config. Nord color scheme, Hack Nerd Font at 10pt.
 **Shell — Fish**
 Managed with Fisher. NVM integration for Node version switching, pnpm and bun on PATH.
 
+**Multiplexer — Tmux**
+Alt+Space prefix, vim-style pane resizing, status bar on top with CPU/memory monitor. Plugins managed with tpm.
+
 **Editor — Neovim**
 NvChad as the base with custom plugin specs layered on top. LSP configured for Python and TypeScript via Mason.
 
@@ -27,6 +30,9 @@ Nord-themed, keyboard-driven. Replaces dmenu entirely.
 **Notifications — Dunst**
 Positioned top-right, themed to match the active palette.
 
+**Theme switcher**
+One rofi menu (`mod+u`) re-themes the whole desktop — Qtile, Alacritty, Rofi, Dunst, fish, and tmux — by flipping a single symlink (`~/.config/themes/current`). Every app imports its colors from that path natively, so there's no config rewriting and nothing to drift. Ships with Nord, Gruvbox, and Material Deep Ocean; adding a theme is just a new folder with six small color files.
+
 ## Installation
 
 No install script. Clone the repo and symlink (or copy) the directories you want into `~/.config/`:
@@ -35,6 +41,12 @@ No install script. Clone the repo and symlink (or copy) the directories you want
 git clone https://github.com/Chriscaracach/dotfiles.git
 ln -s ~/path/to/dotfiles/qtile ~/.config/qtile
 # repeat for nvim, fish, alacritty, etc.
+```
+
+Tmux is the exception — its config lives at `~/.tmux.conf`:
+
+```bash
+ln -s ~/path/to/dotfiles/tmux/tmux.conf ~/.tmux.conf
 ```
 
 Fonts required: **Hack Nerd Font** (for Qtile widgets, Alacritty, and Neovim icons).

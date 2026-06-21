@@ -73,6 +73,12 @@ def init_keys(mod, terminal, groups):
             lazy.spawn(f"bash {os.path.expanduser('~/.config/qtile/menus/ai.sh')}"),
             desc="AI prompt",
         ),
+        Key(
+            [mod],
+            "u",
+            lazy.spawn(f"bash {os.path.expanduser('~/.config/qtile/menus/theme.sh')}"),
+            desc="Theme switcher",
+        ),
         Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
         Key([mod], "p", lazy.spawn("flameshot gui"), desc="Launch Flameshot"),
         Key(

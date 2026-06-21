@@ -10,7 +10,7 @@
     width = (300, 600)
     height = (0, 300)
     notification_limit = 0
-    
+
     ### Appearance ###
     transparency = 0
     padding = 8
@@ -23,7 +23,7 @@
     ### Font ###
     font = "Hack Nerd Font Mono" 10
     line_height = 0
-    
+
     ### Formatting ###
     format = "<b>%s</b>\n%b"
     alignment = left
@@ -32,11 +32,11 @@
     word_wrap = yes
     ignore_newline = no
     markup = full
-    
+
     ### Sorting & Stacking ###
     sort = urgency_descending
     stack_duplicates = true
-    
+
     ### Icons ###
     icon_position = left
     max_icon_size = 32
@@ -47,123 +47,11 @@
     show_indicators = yes
     sticky_history = yes
     history_length = 20
-    
+
     ### Mouse actions ###
     mouse_left_click = close_current
     mouse_middle_click = do_action, close_current
     mouse_right_click = close_all
 
-# |--- DRACULA THEME ---|
-# [urgency_low]kill
-#     background = "#282a36"
-#     foreground = "#f8f8f2"
-#     frame_color = "#bd93f9"
-#     timeout = 5
-# 
-# [urgency_normal]
-#     background = "#282a36"
-#     foreground = "#f8f8f2"
-#     frame_color = "#bd93f9"
-#     timeout = 5
-# 
-# [urgency_critical]
-#     background = "#ff5555"
-#     foreground = "#f8f8f2"
-#     frame_color = "#ff79c6"
-#     timeout = 0
-
-# |--- NORD THEME ---|
-[urgency_low]
-    background = "#2e3440"
-    foreground = "#eceff4"
-    frame_color = "#88c0d0"
-    timeout = 5
-
-[urgency_normal]
-    background = "#2e3440"
-    foreground = "#eceff4"
-    frame_color = "#88c0d0"
-    timeout = 5
-
-[urgency_critical]
-    background = "#bf616a"
-    foreground = "#eceff4"
-    frame_color = "#bf616a"
-    timeout = 0
-
-# |--- GRUVBOX DARK ---|
-# [urgency_low]
-#     background = "#282828"
-#     foreground = "#ebdbb2"
-#     frame_color = "#fe8019"
-#     timeout = 5
-# 
-# [urgency_normal]
-#     background = "#282828"
-#     foreground = "#ebdbb2"
-#     frame_color = "#fe8019"
-#     timeout = 5
-# 
-# [urgency_critical]
-#     background = "#cc241d"
-#     foreground = "#ebdbb2"
-#     frame_color = "#fe8019"
-#     timeout = 0
-
-# |--- CATPPUCCIN MOCHA ---|
-# [urgency_low]
-#     background = "#1e1e2e"
-#     foreground = "#cdd6f4"
-#     frame_color = "#89b4fa"
-#     timeout = 5
-# 
-# [urgency_normal]
-#     background = "#1e1e2e"
-#     foreground = "#cdd6f4"
-#     frame_color = "#89b4fa"
-#     timeout = 5
-# 
-# [urgency_critical]
-#     background = "#f38ba8"
-#     foreground = "#cdd6f4"
-#     frame_color = "#f5c2e7"
-#     timeout = 0
-
-# |--- TOKYO NIGHT ---|
-# [urgency_low]
-#     background = "#1a1b26"
-#     foreground = "#c0caf5"
-#     frame_color = "#7aa2f7"
-#     timeout = 5
-# 
-# [urgency_normal]
-#     background = "#1a1b26"
-#     foreground = "#c0caf5"
-#     frame_color = "#7aa2f7"
-#     timeout = 5
-# 
-# [urgency_critical]
-#     background = "#f7768e"
-#     foreground = "#c0caf5"
-#     frame_color = "#bb9af7"
-#     timeout = 0
-
-# |--- ONEDARK ---|
-# [urgency_low]
-#     background = "#282c34"
-#     foreground = "#abb2bf"
-#     frame_color = "#61afef"
-#     timeout = 5
-# 
-# [urgency_normal]
-#     background = "#282c34"
-#     foreground = "#abb2bf"
-#     frame_color = "#61afef"
-#     timeout = 5
-# 
-# [urgency_critical]
-#     background = "#e06c75"
-#     foreground = "#abb2bf"
-#     frame_color = "#c678dd"
-#     timeout = 0
-
+# Urgency colors come from the active theme via the drop-in
+# dunstrc.d/99-theme.conf -> ~/.config/themes/current/dunst.conf
