@@ -83,6 +83,14 @@ def init_keys(mod, terminal, groups):
             desc="Theme switcher",
         ),
         Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
+        Key(
+            [mod],
+            "w",
+            lazy.spawn(
+                f"bash {os.path.expanduser('~/.config/qtile/menus/wallpaper.sh')}"
+            ),
+            desc="Wallpaper picker",
+        ),
         # Cycle output layout: external only -> dual -> laptop only.
         # Wayland only; X11 keeps the xrandr scripts.
         Key(

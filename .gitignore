@@ -17,3 +17,6 @@ __pycache__/
 
 # Theme switcher state (symlink to the active theme)
 themes/current
+
+# machine-local wallpaper choice (symlink written by menus/wallpaper.sh)
+qtile/current-wallpaper

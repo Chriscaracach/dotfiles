@@ -52,7 +52,15 @@ widget_defaults = dict(
 
 extension_defaults = widget_defaults.copy()
 
-WALLPAPER = "~/wallpapers/art-lake.png"
+# The wallpaper picker (mod+w, menus/wallpaper.sh) flips this symlink; we
+# resolve it here so the choice survives reloads and restarts. Falls back to a
+# fixed image when the symlink has never been set.
+_WALLPAPER_LINK = Path.home() / ".config/qtile/current-wallpaper"
+WALLPAPER = (
+    str(_WALLPAPER_LINK.resolve())
+    if _WALLPAPER_LINK.exists()
+    else str(Path.home() / "wallpapers/art-lake.png")
+)
 
 def make_screen():
     """One Screen with its own bar.

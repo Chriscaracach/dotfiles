@@ -48,6 +48,11 @@ sudo pacman -S \
 
 ### Post-install
 - Wallpaper is set by qtile itself (`Screen(wallpaper=...)` in `config.py`) — no nitrogen needed
+
+**Wallpapers:** drop images (png/jpg/jpeg/webp/bmp) into `~/wallpapers/` and pick
+one with `mod+w` — a rofi grid with thumbnails. The choice is stored as the
+symlink `~/.config/qtile/current-wallpaper`, which `config.py` resolves at load,
+so it survives reloads and restarts. Same symlink idiom as the theme switcher.
 - X11 starts via `~/.xinitrc` (`startx`); Wayland via `startw` (see below)
 
 ### Wayland
@@ -111,6 +116,8 @@ sudo pacman -S ttf-hack-nerd
 - `mod+space` → app launcher (`~/.config/qtile/menus/appmenu.sh`)
 - `mod+v` → mic control (`~/.config/qtile/menus/mic.sh`)
 - `mod+i` → AI prompt (`~/.config/qtile/menus/ai.sh`)
+- `mod+u` → theme switcher (`~/.config/qtile/menus/theme.sh`)
+- `mod+w` → wallpaper picker (`~/.config/qtile/menus/wallpaper.sh`)
 - All menus use `~/.config/rofi/menu.rasi`
 
 ---
