@@ -19,21 +19,31 @@ MODE="fill"
 
 current=$(readlink -f "$CURRENT_LINK" 2>/dev/null)
 
-# Build the menu: one row per image, with a thumbnail and a bullet on the
-# active one. rofi's dmenu icon protocol is  <label>\0icon\x1f<path>
-menu=""
-while IFS= read -r img; do
-    name=$(basename "$img")
-    [ "$(readlink -f "$img")" = "$current" ] && bullet="●" || bullet="○"
-    menu+=$(printf '%s %s\0icon\x1f%s' "$bullet" "$name" "$img")$'\n'
-done < <(find "$WALLPAPER_DIR" -maxdepth 1 -type f \
-              \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' \
-                 -o -iname '*.webp' -o -iname '*.bmp' \) | sort)
+list_images() {
+    find "$WALLPAPER_DIR" -maxdepth 1 -type f \
+        \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' \
+           -o -iname '*.webp' -o -iname '*.bmp' \) | sort
+}
 
-[ -z "$menu" ] && { notify-send "Wallpaper" "No images in $WALLPAPER_DIR"; exit 1; }
+[ -z "$(list_images)" ] && { notify-send "Wallpaper" "No images in $WALLPAPER_DIR"; exit 1; }
+
+# Emit rofi's dmenu icon protocol:  <label>\0icon\x1f<path>\n
+#
+# printf writes into the pipe DIRECTLY. Do not build this in a variable via
+# $(...) - bash strips NUL bytes from command substitution ("warning: command
+# substitution: ignored null byte in input"), which silently destroys every
+# entry and leaves rofi showing an empty grid.
+emit_menu() {
+    local img name bullet
+    while IFS= read -r img; do
+        name=$(basename "$img")
+        if [ "$(readlink -f "$img")" = "$current" ]; then bullet="●"; else bullet="○"; fi
+        printf '%s %s\0icon\x1f%s\n' "$bullet" "$name" "$img"
+    done < <(list_images)
+}
 
 ICON=$''  # nf-fa-image
-choice=$(printf '%s' "$menu" | rofi -dmenu -i -p "Wallpaper" -mesg "$ICON" \
+choice=$(emit_menu | rofi -dmenu -i -p "Wallpaper" -mesg "$ICON" \
     -show-icons \
     -theme "$HOME/.config/rofi/menu.rasi" \
     -theme-str 'listview { columns: 3; lines: 3; }
