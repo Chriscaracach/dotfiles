@@ -1,0 +1,21 @@
+# Hotplug detection for the Wayland session.
+#
+# kanshi only DETECTS which outputs are connected here; the actual geometry is
+# applied by scripts/monitors.sh. That split is deliberate: qtile's Wayland
+# backend rejects output configs containing a disabled head, and kanshi aborts a
+# profile whose test fails, so `output eDP-1 disable` in this file silently does
+# nothing. See the comment at the top of monitors.sh.
+#
+# Connector names are the Wayland ones (`wlr-randr`), NOT xrandr's.
+# Wayland: HDMI-A-1   /   X11: HDMI-1
+
+profile docked {
+    output eDP-1 enable
+    output HDMI-A-1 enable
+    exec ~/.config/qtile/scripts/monitors.sh docked
+}
+
+profile laptop {
+    output eDP-1 mode 1920x1080 position 0,0 enable
+    exec ~/.config/qtile/scripts/monitors.sh laptop
+}

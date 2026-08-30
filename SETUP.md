@@ -47,8 +47,51 @@ sudo pacman -S \
 ```
 
 ### Post-install
-- Set a wallpaper with nitrogen, then run `nitrogen --restore` (already in autostart)
-- Qtile starts via `~/.xinitrc` or a display manager pointing to `qtile`
+- Wallpaper is set by qtile itself (`Screen(wallpaper=...)` in `config.py`) — no nitrogen needed
+- X11 starts via `~/.xinitrc` (`startx`); Wayland via `startw` (see below)
+
+### Wayland
+
+The config is **backend-aware**: one set of files serves both X11 and Wayland,
+branching on `IS_WAYLAND` from `qtile/backend.py` (`qtile.core.name`). `startx`
+keeps working unchanged as a fallback.
+
+```bash
+sudo pacman -S --needed xorg-xwayland xdg-desktop-portal-wlr wl-clipboard \
+                        grim slurp satty wf-recorder wlr-randr kanshi
+```
+
+`xorg-xwayland` is only an *optional* dep of wlroots — without it every X11 app
+fails to start under Wayland.
+
+Start the session from a TTY with `startw` (`bin/startw`, symlink into
+`~/.local/bin/`). Run it from anywhere: it `cd`s to `$HOME` first, because qtile
+passes its cwd to every app it spawns.
+
+**Backend differences handled in the config:**
+
+| Concern | X11 | Wayland |
+|---|---|---|
+| Compositor | picom | none (no effects available) |
+| Keyboard layout | `setxkbmap latam` | `wl_input_rules` + `core.set_keymap()` |
+| Screenshot (`mod+p`) | flameshot | `scripts/screenshot.sh` (grim/slurp/satty) |
+| Recording | ffmpeg `x11grab` | wf-recorder |
+| Outputs | `scripts/{check_monitors,external,builtin}.sh` (xrandr) | kanshi + `scripts/monitors.sh` (wlr-randr), `mod+o` to cycle |
+
+**Wayland gotchas worth knowing** (all documented in-file):
+
+- Connector names differ: xrandr says `HDMI-1`, Wayland says `HDMI-A-1`.
+- qtile rejects output configs containing a *disabled* head, and kanshi aborts a
+  profile whose test fails — so kanshi only detects, `scripts/monitors.sh`
+  applies geometry via wlr-randr, with retries.
+- rofi's Wayland backend segfaults under qtile 0.37, so `menus/*.sh` force it
+  onto XWayland — scoped to the rofi call only, since `qtile cmd-obj` derives
+  its IPC socket name from `WAYLAND_DISPLAY`.
+- Anything invoked from a `lazy.function` runs *inside* qtile's event loop:
+  never call a Wayland client or wait on a subprocess there (it deadlocks the
+  whole session). See the header of `qtile/screen_recorder.py`.
+- Ctrl+Alt+F1..F7 must be bound explicitly (`keys.py`) — Wayland does not give
+  you VT switching for free.
 
 ---
 

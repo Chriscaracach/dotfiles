@@ -1,0 +1,29 @@
+#!/bin/sh
+# Start the qtile Wayland session. The X11 counterpart is `startx` (~/.xinitrc),
+# which this deliberately does not touch.
+#
+# Lives on PATH so it can be run from anywhere. The cd below matters: qtile
+# inherits the cwd of whatever shell launched it, and every app it spawns
+# inherits that in turn - launching from ~/.config/qtile made every terminal
+# open there.
+cd "$HOME" || exit 1
+
+export XDG_SESSION_TYPE=wayland
+export XDG_CURRENT_DESKTOP=qtile
+export XDG_SESSION_DESKTOP=qtile
+export DESKTOP_SESSION=qtile
+
+# Toolkits: prefer Wayland, fall back to XWayland.
+export QT_QPA_PLATFORM="wayland;xcb"
+export GDK_BACKEND="wayland,x11"
+export MOZ_ENABLE_WAYLAND=1
+export _JAVA_AWT_WM_NONREPARENTING=1
+export XCURSOR_SIZE=24
+
+# SDL_VIDEODRIVER is deliberately left unset. Forcing it to "wayland" breaks a
+# lot of older Steam titles; unset lets SDL pick XWayland on its own.
+
+# The session environment is pushed into D-Bus/systemd from the startup_once
+# hook in config.py, not here - WAYLAND_DISPLAY does not exist yet.
+
+exec qtile start -b wayland

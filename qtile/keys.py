@@ -1,7 +1,10 @@
 import os
 
+from libqtile import qtile
 from libqtile.config import Key
 from libqtile.lazy import lazy
+
+from backend import IS_WAYLAND
 
 
 def init_keys(mod, terminal, groups):
@@ -80,7 +83,26 @@ def init_keys(mod, terminal, groups):
             desc="Theme switcher",
         ),
         Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
-        Key([mod], "p", lazy.spawn("flameshot gui"), desc="Launch Flameshot"),
+        # Cycle output layout: external only -> dual -> laptop only.
+        # Wayland only; X11 keeps the xrandr scripts.
+        Key(
+            [mod],
+            "o",
+            lazy.spawn(
+                f"bash {os.path.expanduser('~/.config/qtile/scripts/monitors.sh')} cycle"
+            ).when(func=lambda: qtile.core.name == "wayland"),
+            desc="Cycle monitor layout",
+        ),
+        Key(
+            [mod],
+            "p",
+            lazy.spawn(
+                f"sh {os.path.expanduser('~/.config/qtile/scripts/screenshot.sh')}"
+                if IS_WAYLAND
+                else "flameshot gui"
+            ),
+            desc="Region screenshot",
+        ),
         Key(
             [mod],
             "g",
@@ -100,6 +122,21 @@ def init_keys(mod, terminal, groups):
     keys.append(Key([mod], "x", lazy.group["7"].toscreen()))
     keys.append(Key([mod], "s", lazy.group["8"].toscreen()))
     keys.append(Key([mod], "m", lazy.group["9"].toscreen()))
+
+    # Wayland does not handle Ctrl+Alt+F<n> for you the way the kernel does on a
+    # text console or X does in a session — the compositor holds the keyboard, so
+    # the VT switch must be bound explicitly or there is no way out of the
+    # session. Harmless on X11: .when() defers the backend check to press time,
+    # and there it never fires.
+    for vt in range(1, 8):
+        keys.append(
+            Key(
+                ["control", "mod1"],
+                f"f{vt}",
+                lazy.core.change_vt(vt).when(func=lambda: qtile.core.name == "wayland"),
+                desc=f"Switch to VT{vt}",
+            )
+        )
 
     for i in groups:
         keys.extend(
