@@ -42,12 +42,24 @@ emit_menu() {
     done < <(list_images)
 }
 
-ICON=$''  # nf-fa-image
-choice=$(emit_menu | rofi -dmenu -i -p "Wallpaper" -mesg "$ICON" \
+# No -mesg here (the other menus use one): the glyph rendered blank in Hack
+# Nerd Font and cost ~100px of empty space above the grid, which the thumbnails
+# make redundant anyway.
+choice=$(emit_menu | rofi -dmenu -i -p "Wallpaper" \
     -show-icons \
     -theme "$HOME/.config/rofi/menu.rasi" \
-    -theme-str 'listview { columns: 3; lines: 3; }
-                element-icon { size: 8em; }')
+    -theme-str 'window { width: 960px; }
+                listview { columns: 3; lines: 2; spacing: 8px; }
+                element { padding: 10px; orientation: vertical; spacing: 6px; }
+                element-icon { size: 276px; }
+                element-text { horizontal-align: 0.5; }')
+
+# Sizing notes: the base menu.rasi is 280px wide (built for a 1-column list),
+# so the width override is required or the grid gets clipped. element-icon
+# `size` sets the WIDTH; rofi derives height from the image's aspect ratio, so
+# 16:9 wallpapers render 276x155 with no letterboxing. The two-value form
+# (`size: H W`) is accepted but behaves identically - the icon box stays
+# square, which is the gap between each thumbnail and its label.
 
 [ -z "$choice" ] && exit 0
 
