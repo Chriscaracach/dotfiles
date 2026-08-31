@@ -272,6 +272,83 @@ exec qtile start
 
 ---
 
+## Installing (this account or another one)
+
+`bin/install.sh` symlinks everything in this repo into `$HOME`. It is
+idempotent — re-run it after a `git pull` and it is a no-op for anything
+already linked. Anything already there that is not the right symlink is moved
+to `<name>.bak-<timestamp>`, never deleted.
+
+```bash
+git clone https://github.com/Chriscaracach/dotfiles.git ~/prog/dotfiles
+sh ~/prog/dotfiles/bin/install.sh --dry-run   # see what it would do
+sh ~/prog/dotfiles/bin/install.sh
+```
+
+What it links: `alacritty dunst kanshi lazygit nvim pcmanfm picom qtile rofi
+themes xdg-desktop-portal` into `~/.config/`, the fish files entry by entry,
+plus `~/.tmux.conf`, `~/.xinitrc`, and `~/.local/bin/startw`.
+
+Two files are **copied, not linked**, and only when absent — linking them would
+push one user's state or identity into the repo:
+
+- `fish_variables` — fish rewrites it constantly (universal variables, including
+  the `__theme_active` the theme switcher pokes).
+- `.gitconfig` — carries a name and email. Set your own after installing.
+
+It also creates the per-user state the configs expect: the `themes/current`
+symlink (defaults to nord), the dunst theme drop-in, `~/wallpapers`, and the
+`qtile/current-wallpaper` symlink. Those last two are gitignored — they are
+choices, not config.
+
+---
+
+## Second user on the same machine
+
+Every package is system-wide, so a second account needs no `pacman` at all —
+only its own clone. Each user needs a **separate clone**: `mod+u` and `mod+w`
+persist their choice as symlinks written *inside* the config dirs, so a shared
+read-only copy would break both switchers.
+
+Note `/home/<user>` is mode `700`, so one account cannot read the other's clone
+or wallpapers. Share the wallpapers through a system path instead — done once,
+as root:
+
+```bash
+sudo mkdir -p /usr/local/share/wallpapers
+sudo cp ~/wallpapers/* /usr/local/share/wallpapers/
+sudo chmod 755 /usr/local/share/wallpapers
+```
+
+`install.sh` points `~/wallpapers` at that directory when it exists (and falls
+back to creating an empty `~/wallpapers` when it does not). To go back to a
+private set, replace the symlink with a real directory.
+
+Then, **logged in as the other user**:
+
+```bash
+git clone https://github.com/Chriscaracach/dotfiles.git ~/prog/dotfiles
+sh ~/prog/dotfiles/bin/install.sh
+git config --global user.name  "..."   # .gitconfig was copied from mine
+git config --global user.email "..."
+chsh -s /usr/bin/fish                  # if not already
+```
+
+Log out to a TTY and run `startw`. `~/.local/bin` is put on `PATH` by
+`fish/config.fish`; from another shell, use the full path or add it yourself.
+
+Caveats:
+
+- Only one session can hold the DRM master, so both users cannot be on the
+  graphical session at once — switch VTs (Ctrl+Alt+F1..F7, bound in `keys.py`)
+  and start `startw` on a free one.
+- `config.fish` runs `nvm use v22.22.2` on every interactive shell. Without the
+  fisher plugins and that Node version installed (section 7), it prints a
+  harmless error on each new shell.
+- The other account needs the `video` group for `brightnessctl`.
+
+---
+
 ## Themes
 
 Themes live in `~/.config/themes/<name>/` — six color files each (qtile, alacritty, rofi, dunst, fish, tmux). The active theme is just a symlink, which the configs import from:
@@ -309,10 +386,11 @@ nvm install v22.22.2
 
 ## After restoring dotfiles
 
-1. `chsh -s /usr/bin/fish`
-2. Run `nvim` once to trigger plugin sync
-3. Symlink `tmux/tmux.conf` to `~/.tmux.conf`, clone tpm, then `prefix + I` inside tmux
-4. `ln -s ~/.config/themes/nord ~/.config/themes/current` (or any theme)
-5. Run `nitrogen --restore` or pick a wallpaper
+1. `sh ~/prog/dotfiles/bin/install.sh` — this does the symlinking, and creates
+   the `themes/current` symlink and `~/wallpapers` for you
+2. `chsh -s /usr/bin/fish`
+3. Run `nvim` once to trigger plugin sync
+4. Clone tpm, then `prefix + I` inside tmux
+5. Pick a wallpaper with `mod+w`
 6. `sudo systemctl enable --now NetworkManager`
-7. Reboot or `startx`
+7. `startw` (Wayland) or `startx` (X11)

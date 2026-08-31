@@ -35,21 +35,23 @@ One rofi menu (`mod+u`) re-themes the whole desktop — Qtile, Alacritty, Rofi, 
 
 ## Installation
 
-No install script. Clone the repo and symlink (or copy) the directories you want into `~/.config/`:
-
 ```bash
-git clone https://github.com/Chriscaracach/dotfiles.git
-ln -s ~/path/to/dotfiles/qtile ~/.config/qtile
-# repeat for nvim, fish, alacritty, etc.
+git clone https://github.com/Chriscaracach/dotfiles.git ~/prog/dotfiles
+sh ~/prog/dotfiles/bin/install.sh --dry-run   # see what it would do
+sh ~/prog/dotfiles/bin/install.sh
 ```
 
-Tmux is the exception — its config lives at `~/.tmux.conf`:
-
-```bash
-ln -s ~/path/to/dotfiles/tmux/tmux.conf ~/.tmux.conf
-```
+`bin/install.sh` symlinks each directory into `~/.config/` (plus `~/.tmux.conf`,
+`~/.xinitrc`, and `~/.local/bin/startw`) and creates the per-user state the
+configs expect — the `themes/current` symlink, the dunst theme drop-in, and
+`~/wallpapers`. It is idempotent, so re-run it after a `git pull`; anything it
+would overwrite is backed up rather than replaced. Pick the pieces you want by
+hand instead if you'd rather not take the whole thing.
 
 Fonts required: **Hack Nerd Font** (for Qtile widgets, Alacritty, and Neovim icons).
+
+See [SETUP.md](SETUP.md) for the full package list, and for setting this up on a
+second account on the same machine.
 
 ## On open source
 
