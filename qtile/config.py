@@ -179,3 +179,39 @@ def _autostart():
 
     for cmd in autostart:
         subprocess.Popen(cmd, shell=True)
+
+
+def _detach_groups_from_dead_screens():
+    """Release groups still pinned to a Screen that is no longer live.
+
+    Symptom: a group shows as occupied in the GroupBox but no keybinding can
+    reach it - mod+<letter> and mod+<number> alike are silent no-ops.
+
+    Two Screens are configured above (see make_screen) but only one output is
+    usually connected, so qtile drops the second from qtile.screens on every
+    monitor change. The group that was sitting on it keeps its reference, and
+    the dropped Screen still carries a *copy* of the surviving output's info
+    (port/make/model/serial). Screen.__eq__ compares by output identity when
+    that info is present, so the dead Screen compares equal to the live one:
+
+      - Qtile.reconfigure_screens() cleans up with `group.screen in
+        self.screens`; `in` uses ==, that reports True, and the group is never
+        released - so this never self-heals.
+      - Screen.set_group() then bails on `new_group.screen == self`, which is
+        why toscreen() does nothing at all.
+
+    Identity, not equality, is the check that actually distinguishes them.
+    """
+    for group in qtile.groups:
+        if group.screen is None:
+            continue
+        if not any(group.screen is screen for screen in qtile.screens):
+            # hide() is what sets group.screen back to None.
+            group.hide()
+
+
+# reconfigure_screens() fires screens_reconfigured. "startup" covers the other
+# path that reprocesses screens without it - load_config() - and unlike
+# startup_complete (initial run only) it also fires on lazy.reload_config().
+hook.subscribe.screens_reconfigured(_detach_groups_from_dead_screens)
+hook.subscribe.startup(_detach_groups_from_dead_screens)
